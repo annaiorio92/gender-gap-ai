@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gender Gap tra Donne e AI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #a78bfa, #ec4899);
+        }
+        .presentation {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+        }
+        h1 {
+            color: #7e22ce;
+            text-align: center;
+        }
+        .content {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #7c3aed;
+        }
+        .slide-indicator {
+            text-align: center;
+            margin-top: 10px;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <h1 id="title">Il Gender Gap nell'era dell'AI</h1>
+        <div id="content" class="content"></div>
+        <div class="navigation">
+            <button onclick="changeSlide(-1)">Precedente</button>
+            <button onclick="changeSlide(1)">Successiva</button>
+        </div>
+        <div id="slideIndicator" class="slide-indicator"></div>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                title: "Il Gender Gap nell'era dell'AI",
+                content: "L'avanzata dell'Intelligenza Artificiale porta con sé sfide e opportunità, ma rischia di acuire le disparità di genere esistenti nel mondo digitale e lavorativo."
+            },
+            {
+                title: "Statistiche Allarmanti",
+                content: "• Solo il 43% delle donne italiane possiede competenze digitali di base<br>• Solo 1 donna su 6 in Italia ha una laurea STEM<br>• Le specialiste ICT sono l'1,5% contro il 5,7% di uomini"
+            },
+            {
+                title: "Competenze Digitali di Base",
+                content: '<canvas id="digitalSkillsChart"></canvas>'
+            },
+            {
+                title: "AI e Rappresentanza Femminile",
+                content: "• A livello globale, solo il 22% dei professionisti nel settore AI sono donne<br>• In Italia, la percentuale sale al 26%, ma scende al 12,4% nei ruoli dirigenziali"
+            },
+            {
+                title: "Rappresentanza Femminile nell'AI in Italia",
+                content: '<canvas id="aiRepresentationChart"></canvas>'
+            },
+            {
+                title: "Bias negli Algoritmi AI",
+                content: "Gli algoritmi AI spesso riflettono e perpetuano stereotipi di genere presenti nei dati di addestramento, influenzando negativamente le opportunità lavorative per le donne."
+            },
+            {
+                title: "Soluzioni Proposte",
+                content: "• Promuovere la formazione STEM per le donne fin dalla giovane età<br>• Aumentare la diversità nei team di sviluppo AI<br>• Implementare politiche inclusive nel settore tecnologico<br>• Correggere i bias negli algoritmi AI"
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            document.getElementById('title').textContent = slides[currentSlide].title;
+            document.getElementById('content').innerHTML = slides[currentSlide].content;
+            document.getElementById('slideIndicator').textContent = `Slide ${currentSlide + 1} di ${slides.length}`;
+
+            if (currentSlide === 2) {
+                createDigitalSkillsChart();
+            } else if (currentSlide === 4) {
+                createAIRepresentationChart();
+            }
+        }
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            updateSlide();
+        }
+
+        function createDigitalSkillsChart() {
+            const ctx = document.getElementById('digitalSkillsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Donne italiane', 'Media UE donne'],
+                    datasets: [{
+                        label: 'Competenze digitali di base (%)',
+                        data: [43, 52],
+                        backgroundColor: ['#8b5cf6', '#ec4899']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function createAIRepresentationChart() {
+            const ctx = document.getElementById('aiRepresentationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Donne', 'Uomini'],
+                    datasets: [{
+                        data: [26, 74],
+                        backgroundColor: ['#8b5cf6', '#ec4899']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Rappresentanza nel settore AI in Italia (%)'
+                        }
+                    }
+                }
+            });
+        }
+
+        updateSlide();
+    </script>
+</body>
+</html>
